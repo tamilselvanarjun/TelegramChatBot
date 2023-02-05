@@ -34,29 +34,6 @@ def generate_random_technology_keyword():
     # Randomly select a keyword from the list
     return random.choice(technology_keywords)
 
-
-def fetch_tech_news():
-    # Fetch top headlines from News API with 'tech' category
-    keyword = generate_random_technology_keyword()
-    # Encode the keyword
-    encoded_keyword = quote(keyword)
-    url = f'https://newsapi.org/v2/everything?q={encoded_keyword}&language=en&apiKey={NEWS_API_KEY}'
-    response = requests.get(url)
-    data = response.json()
-    articles = [random.choice(data['articles'])]
-    return articles
-
-
-def format_news(news):
-    # Format the fetched news into a readable format (e.g., markdown)
-    formatted_news = ""
-    for article in news:
-        formatted_news += f"Title: {article['title']}\n"
-        formatted_news += f"Description: {article['description']}\n"
-        formatted_news += f"URL: {article['url']}\n\n"
-    return formatted_news
-
-
 def fetch_and_post_tech_news():
     # Fetch tech news from News API
     news = fetch_tech_news()
@@ -73,6 +50,25 @@ def fetch_and_post_tech_news():
     else:
         print("Error:", response.status_code)
 
+def fetch_tech_news():
+    # Fetch top headlines from News API with 'tech' category
+    keyword = generate_random_technology_keyword()
+    # Encode the keyword
+    encoded_keyword = quote(keyword)
+    url = f'https://newsapi.org/v2/everything?q={encoded_keyword}&language=en&apiKey={NEWS_API_KEY}'
+    response = requests.get(url)
+    data = response.json()
+    articles = [random.choice(data['articles'])]
+    return articles
+
+def format_news(news):
+    # Format the fetched news into a readable format (e.g., markdown)
+    formatted_news = ""
+    for article in news:
+        formatted_news += f"Title: {article['title']}\n"
+        formatted_news += f"Description: {article['description']}\n"
+        formatted_news += f"URL: {article['url']}\n\n"
+    return formatted_news
 
 if __name__ == '__main__':
     fetch_and_post_tech_news()
