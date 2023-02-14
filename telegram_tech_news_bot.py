@@ -1,6 +1,10 @@
 import random
 import requests
 from urllib.parse import quote
+import logging
+
+# Configure logging
+logging.basicConfig(filename='tech_news.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 TELEGRAM_BOT_TOKEN = 'your_telegram_bot_token'
 TELEGRAM_CHANNEL_ID = 'your_telegram_channel_id'
@@ -64,14 +68,18 @@ def fetch_and_post_tech_news():
     # Format the news
     formatted_news = format_news(news)
     print(formatted_news)
+    logging.info("Tech news fetched successfully.")
+    
     channel_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=-your_telegram_channel_id&text={formatted_news}"
     response = requests.get(channel_url)
     # Check if the request was successful
     if response.status_code == 200:
         # Do something with the response, like print it
         print(response.json())
+        logging.info("Tech news posted to Telegram successfully.")
     else:
         print("Error:", response.status_code)
+        logging.error(f"Failed to post tech news to Telegram. Status code: {response.status_code}")
 
 
 if __name__ == '__main__':
