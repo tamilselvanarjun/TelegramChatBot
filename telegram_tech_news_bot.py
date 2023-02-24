@@ -67,19 +67,33 @@ def fetch_and_post_tech_news():
 
     # Format the news
     formatted_news = format_news(news)
+
+    # Print the formatted news
     print(formatted_news)
+
+    # Log successful news fetching
     logging.info("Tech news fetched successfully.")
-    
+
+    # Prepare the channel URL for Telegram
     channel_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=-your_telegram_channel_id&text={formatted_news}"
+
+    # Send the formatted news to Telegram
     response = requests.get(channel_url)
-    # Check if the request was successful
+
+    # Check if the request to Telegram was successful
     if response.status_code == 200:
-        # Do something with the response, like print it
+        # Print the Telegram response
         print(response.json())
+
+        # Log successful news posting to Telegram
         logging.info("Tech news posted to Telegram successfully.")
     else:
+        # Print an error message for unsuccessful request to Telegram
         print("Error:", response.status_code)
+
+        # Log the error for failed news posting to Telegram
         logging.error(f"Failed to post tech news to Telegram. Status code: {response.status_code}")
+
 
 
 if __name__ == '__main__':
