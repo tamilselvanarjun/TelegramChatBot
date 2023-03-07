@@ -52,13 +52,19 @@ def fetch_tech_news():
 
 
 def format_news(news):
-    # Format the fetched news into a readable format (e.g., markdown)
+    # Initialize an empty string to store the formatted news
     formatted_news = ""
+
+    # Iterate through each article in the news list
     for article in news:
+        # Append the title, description, and URL of each article to the formatted news string
         formatted_news += f"Title: {article['title']}\n"
         formatted_news += f"Description: {article['description']}\n"
         formatted_news += f"URL: {article['url']}\n\n"
+
+    # Return the formatted news string
     return formatted_news
+
 
 
 def fetch_and_post_tech_news():
