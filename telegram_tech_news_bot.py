@@ -35,8 +35,10 @@ technology_keywords = [
 
 
 def generate_random_technology_keyword():
-    # Randomly select a keyword from the list
-    return random.choice(technology_keywords)
+    # Randomly select a keyword from the list of technology keywords
+    random_keyword = random.choice(technology_keywords)
+    return random_keyword
+
 
 
 def fetch_tech_news():
