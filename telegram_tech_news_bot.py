@@ -7,7 +7,6 @@ TELEGRAM_CHANNEL_ID = 'your_telegram_channel_id'
 NEWS_API_KEY = 'your_news_api_key'
 
 # List of technology-related keywords
-# List of technology-related keywords
 technology_keywords = [
     "artificial intelligence",
     "machine learning",
@@ -26,7 +25,7 @@ technology_keywords = [
     "java",
     "DevOps",
     "Matplotlib",
-    "Google Cloud"
+    "Google Cloud",  # Added comma here
     "Azure"
 ]
 
