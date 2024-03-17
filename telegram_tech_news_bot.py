@@ -59,11 +59,7 @@ def fetch_tech_news():
     url = f'https://newsapi.org/v2/everything?q={encoded_keyword}&language=en&apiKey={NEWS_API_KEY}'
     response = requests.get(url)
     data = response.json()
-    lower_bound = 1
-    upper_bound = len(data)
-    # Generate a random number inclusively within the specified range
-    random_number = random.randint(lower_bound, upper_bound)
-    articles = [data['articles'][random_number]]
+    articles = [random.choice(data['articles'])]
     return articles
 
 def format_news(news):
