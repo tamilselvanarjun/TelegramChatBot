@@ -3,6 +3,13 @@
 ## Overview
 This Telegram bot fetches and posts technology-related news articles to a specified Telegram channel. It utilizes the News API to fetch news and the Telegram Bot API to post news articles to the channel.
 
+
+```html
+<div style="position: relative; padding-bottom: 56.25%; height: 0;">
+  <iframe src="https://jumpshare.com/embed/f2OqGgInjNFl8shX7z2Q" frameborder="0" webkitallowfullscreen mozallowfullscreen allowfullscreen style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+</div>
+```
+
 ## Features
 1.Fetches random technology-related news using the News API.
 
@@ -11,6 +18,7 @@ This Telegram bot fetches and posts technology-related news articles to a specif
 3.Posts formatted news to a specified Telegram channel using the Telegram Bot API.
 
 4.Randomly selects a technology keyword for each news fetch to provide variety.
+
 
 ## Requirements
 - Python 3.x
