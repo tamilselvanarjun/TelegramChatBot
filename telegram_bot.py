@@ -2,13 +2,17 @@ import random
 import requests
 from urllib.parse import quote
 import logging
+import os
+from dotenv import load_dotenv
 
 # Configure logging
 logging.basicConfig(filename='tech_news.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-TELEGRAM_BOT_TOKEN = 'your_telegram_bot_token'
-TELEGRAM_CHANNEL_ID = 'your_telegram_channel_id'
-NEWS_API_KEY = 'your_news_api_key'
+# Load environment variables from .env file
+load_dotenv()
+TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID')
+NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 
 # List of technology-related keywords
 technology_keywords = [
@@ -40,7 +44,6 @@ def generate_random_technology_keyword():
     return random_keyword
 
 
-
 def fetch_tech_news():
     # Fetch top headlines from News API with 'tech' category
     keyword = generate_random_technology_keyword()
@@ -68,7 +71,6 @@ def format_news(news):
     return formatted_news
 
 
-
 def fetch_and_post_tech_news():
     # Fetch tech news from News API
     news = fetch_tech_news()
@@ -76,32 +78,22 @@ def fetch_and_post_tech_news():
     # Format the news
     formatted_news = format_news(news)
 
-    # Print the formatted news
-    print(formatted_news)
-
     # Log successful news fetching
     logging.info("Tech news fetched successfully.")
 
     # Prepare the channel URL for Telegram
-    channel_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage?chat_id=-your_telegram_channel_id&text={formatted_news}"
+    channel_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage?chat_id={TELEGRAM_CHANNEL_ID}&text={formatted_news}"
 
     # Send the formatted news to Telegram
     response = requests.get(channel_url)
 
     # Check if the request to Telegram was successful
     if response.status_code == 200:
-        # Print the Telegram response
-        print(response.json())
-
         # Log successful news posting to Telegram
         logging.info("Tech news posted to Telegram successfully.")
     else:
-        # Print an error message for unsuccessful request to Telegram
-        print("Error:", response.status_code)
-
         # Log the error for failed news posting to Telegram
         logging.error(f"Failed to post tech news to Telegram. Status code: {response.status_code}")
-
 
 
 if __name__ == '__main__':

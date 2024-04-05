@@ -26,18 +26,29 @@ Clone the repository:
 ```
 pip install requests
 ```
+## Configuration
+
 Replace placeholders in the script:
 
-Replace your_telegram_bot_token with your actual Telegram bot token.
+open the .env file in the project root directory and add your environment variables:
 
-Replace your_telegram_channel_id with your actual Telegram channel ID.
+TELEGRAM_BOT_TOKEN: Your Telegram bot token obtained from the BotFather.
 
-Replace your_news_api_key with your actual News API key.
+TELEGRAM_CHANNEL_ID: The ID of your Telegram channel where you want to post the news.
+
+NEWS_API_KEY: Your News API key obtained from https://newsapi.org/.
+
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token
+
+TELEGRAM_CHANNEL_ID=your_telegram_channel_id
+
+NEWS_API_KEY=your_news_api_key
+
 
 ## Usage
 Run the script:
 ```
-python telegram_tech_news_bot.py
+python telegram_bot.py
 ```
 The bot will fetch a technology keyword, fetch news related to that keyword, format the news, and post it to the specified Telegram channel.
 
