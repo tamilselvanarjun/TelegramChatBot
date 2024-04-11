@@ -11,6 +11,15 @@ class TestTechNews(unittest.TestCase):
         self.assertIn('title', articles[0])
         self.assertIn('description', articles[0])
         self.assertIn('url', articles[0])
+def test_format_news(self):
+        news = [{'title': 'Test Title', 'description': 'Test Description', 'url': 'http://example.com'}]
+        formatted_news = format_news(news)
+        self.assertIn('Test Title', formatted_news)
+        self.assertIn('Test Description', formatted_news)
+        self.assertIn('http://example.com', formatted_news)
 
 if __name__ == '__main__':
     unittest.main()
+
+
+#Vice President of Operations at TEAM Public Choices
