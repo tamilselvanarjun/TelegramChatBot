@@ -1,100 +1,67 @@
-import random
-import requests
-from urllib.parse import quote
-import logging
-import os
-from dotenv import load_dotenv
+import unittest
+from unittest.mock import patch
+from main import generate_random_technology_keyword, fetch_tech_news, format_news, fetch_and_post_tech_news
 
-# Configure logging
-logging.basicConfig(filename='tech_news.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+class TestTechNews(unittest.TestCase):
 
-# Load environment variables from .env file
-load_dotenv()
-TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
-TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID')
-NEWS_API_KEY = os.getenv('NEWS_API_KEY')
+    def test_generate_random_technology_keyword(self):
+        keyword = generate_random_technology_keyword()
+        self.assertIn(keyword, [
+            "artificial intelligence",
+            "machine learning",
+            "cybersecurity",
+            "blockchain",
+            "internet of things",
+            "5g technology",
+            "cloud computing",
+            "big data",
+            "virtual reality",
+            "augmented reality",
+            "quantum computing",
+            "generative AI",
+            "data science",
+            "python programming",
+            "java",
+            "DevOps",
+            "Matplotlib",
+            "Google Cloud",
+            "Azure"
+        ])
 
-# List of technology-related keywords
-technology_keywords = [
-    "artificial intelligence",
-    "machine learning",
-    "cybersecurity",
-    "blockchain",
-    "internet of things",
-    "5g technology",
-    "cloud computing",
-    "big data",
-    "virtual reality",
-    "augmented reality",
-    "quantum computing",
-    "generative AI",
-    "data science",
-    "python programming",
-    "java",
-    "DevOps",
-    "Matplotlib",
-    "Google Cloud",  # Added comma here
-    "Azure"
-]
+    @patch('main.requests.get')
+    def test_fetch_tech_news(self, mock_get):
+        mock_data = {
+            'articles': [
+                {'title': 'Sample Title', 'description': 'Sample Description', 'url': 'https://example.com'}
+            ]
+        }
+        mock_get.return_value.json.return_value = mock_data
+        news = fetch_tech_news()
+        self.assertEqual(len(news), 1)
+        self.assertEqual(news[0]['title'], 'Sample Title')
 
+    def test_format_news(self):
+        articles = [
+            {'title': 'Sample Title', 'description': 'Sample Description', 'url': 'https://example.com'}
+        ]
+        formatted_news = format_news(articles)
+        self.assertIn('Title: Sample Title', formatted_news)
+        self.assertIn('Description: Sample Description', formatted_news)
+        self.assertIn('URL: https://example.com', formatted_news)
 
-def generate_random_technology_keyword():
-    # Randomly select a keyword from the list of technology keywords
-    random_keyword = random.choice(technology_keywords)
-    return random_keyword
-
-
-def fetch_tech_news():
-    # Fetch top headlines from News API with 'tech' category
-    keyword = generate_random_technology_keyword()
-    # Encode the keyword
-    encoded_keyword = quote(keyword)
-    url = f'https://newsapi.org/v2/everything?q={encoded_keyword}&language=en&apiKey={NEWS_API_KEY}'
-    response = requests.get(url)
-    data = response.json()
-    articles = [random.choice(data['articles'])]
-    return articles
-
-
-def format_news(news):
-    # Initialize an empty string to store the formatted news
-    formatted_news = ""
-
-    # Iterate through each article in the news list
-    for article in news:
-        # Append the title, description, and URL of each article to the formatted news string
-        formatted_news += f"Title: {article['title']}\n"
-        formatted_news += f"Description: {article['description']}\n"
-        formatted_news += f"URL: {article['url']}\n\n"
-
-    # Return the formatted news string
-    return formatted_news
-
-
-def fetch_and_post_tech_news():
-    # Fetch tech news from News API
-    news = fetch_tech_news()
-
-    # Format the news
-    formatted_news = format_news(news)
-
-    # Log successful news fetching
-    logging.info("Tech news fetched successfully.")
-
-    # Prepare the channel URL for Telegram
-    channel_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage?chat_id={TELEGRAM_CHANNEL_ID}&text={formatted_news}"
-
-    # Send the formatted news to Telegram
-    response = requests.get(channel_url)
-
-    # Check if the request to Telegram was successful
-    if response.status_code == 200:
-        # Log successful news posting to Telegram
-        logging.info("Tech news posted to Telegram successfully.")
-    else:
-        # Log the error for failed news posting to Telegram
-        logging.error(f"Failed to post tech news to Telegram. Status code: {response.status_code}")
-
+    @patch('main.requests.get')
+    def test_fetch_and_post_tech_news(self, mock_get):
+        mock_data = {
+            'articles': [
+                {'title': 'Sample Title', 'description': 'Sample Description', 'url': 'https://example.com'}
+            ]
+        }
+        mock_get.return_value.json.return_value = mock_data
+        with patch('main.requests.get') as mock_request:
+            mock_request.return_value.status_code = 200
+            fetch_and_post_tech_news()
+            mock_request.assert_called_once()
+            self.assertTrue(mock_request.called)
 
 if __name__ == '__main__':
-    fetch_and_post_tech_news()
+    unittest.main()
