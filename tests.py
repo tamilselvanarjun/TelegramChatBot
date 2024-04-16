@@ -3,7 +3,6 @@ from unittest.mock import patch
 from main import generate_random_technology_keyword, fetch_tech_news, format_news, fetch_and_post_tech_news
 
 class TestTechNews(unittest.TestCase):
-
     def test_generate_random_technology_keyword(self):
         keyword = generate_random_technology_keyword()
         self.assertIn(keyword, [
