@@ -4,6 +4,9 @@ from main import generate_random_technology_keyword, fetch_tech_news, format_new
 
 class TestTechNews(unittest.TestCase):
     def test_generate_random_technology_keyword(self):
+        """
+        Test case to check if the generated technology keyword is valid.
+        """
         keyword = generate_random_technology_keyword()
         self.assertIn(keyword, [
             "artificial intelligence",
@@ -20,7 +23,6 @@ class TestTechNews(unittest.TestCase):
             "generative AI",
             "data science",
             "python programming",
-            "java",
             "DevOps",
             "Matplotlib",
             "Google Cloud",
@@ -29,6 +31,9 @@ class TestTechNews(unittest.TestCase):
 
     @patch('main.requests.get')
     def test_fetch_tech_news(self, mock_get):
+        """
+        Test case to check if the tech news fetching function works correctly.
+        """
         mock_data = {
             'articles': [
                 {'title': 'Sample Title', 'description': 'Sample Description', 'url': 'https://example.com'}
@@ -40,6 +45,9 @@ class TestTechNews(unittest.TestCase):
         self.assertEqual(news[0]['title'], 'Sample Title')
 
     def test_format_news(self):
+        """
+        Test case to check if the news formatting function works correctly.
+        """
         articles = [
             {'title': 'Sample Title', 'description': 'Sample Description', 'url': 'https://example.com'}
         ]
@@ -50,6 +58,9 @@ class TestTechNews(unittest.TestCase):
 
     @patch('main.requests.get')
     def test_fetch_and_post_tech_news(self, mock_get):
+        """
+        Test case to check if the fetch and post news function works correctly.
+        """
         mock_data = {
             'articles': [
                 {'title': 'Sample Title', 'description': 'Sample Description', 'url': 'https://example.com'}
