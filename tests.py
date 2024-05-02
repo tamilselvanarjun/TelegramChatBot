@@ -1,18 +1,13 @@
 import unittest
-from unittest.mock import patch
-import sys
+from unittest.mock import patch, MagicMock
 import io
+import sys
+import requests
 from my_script import generate_random_technology_keyword, fetch_tech_news, format_news, fetch_and_post_tech_news
 
 class TestTechNews(unittest.TestCase):
     @patch('random.choice')
     def test_generate_random_technology_keyword(self, mock_choice):
-        technology_keywords = [
-            "artificial intelligence",
-            "machine learning",
-            "cybersecurity",
-            "blockchain"
-        ]
         mock_choice.return_value = "artificial intelligence"
         keyword = generate_random_technology_keyword()
         self.assertEqual(keyword, "artificial intelligence")
@@ -30,17 +25,19 @@ class TestTechNews(unittest.TestCase):
         expected_output = "Title: Test Title\nDescription: Test Description\nURL: https://example.com\n\n"
         self.assertEqual(formatted_news, expected_output)
 
-    @patch('requests.get')
-    def test_fetch_and_post_tech_news_success(self, mock_get):
-        mock_get.return_value.status_code = 200
-        with patch('sys.stdout', new_callable=io.StringIO) as mock_stdout:
+    @patch('sys.stdout', new_callable=io.StringIO)
+    def test_fetch_and_post_tech_news_success(self, mock_stdout):
+        response_mock = MagicMock()
+        response_mock.status_code = 200
+        with patch('requests.get', return_value=response_mock):
             fetch_and_post_tech_news()
             self.assertEqual(mock_stdout.getvalue(), "Tech news posted to Telegram successfully.\n")
 
-    @patch('requests.get')
-    def test_fetch_and_post_tech_news_failure(self, mock_get):
-        mock_get.return_value.status_code = 404
-        with patch('sys.stderr', new_callable=io.StringIO) as mock_stderr:
+    @patch('sys.stderr', new_callable=io.StringIO)
+    def test_fetch_and_post_tech_news_failure(self, mock_stderr):
+        response_mock = MagicMock()
+        response_mock.status_code = 404
+        with patch('requests.get', return_value=response_mock):
             fetch_and_post_tech_news()
             self.assertIn("Failed to post tech news to Telegram. Status code: 404", mock_stderr.getvalue())
 
