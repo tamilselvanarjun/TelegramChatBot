@@ -30,70 +30,56 @@ technology_keywords = [
     "generative AI",
     "data science",
     "python programming",
-    "java",
     "DevOps",
     "Matplotlib",
-    "Google Cloud",  # Added comma here
+    "Google Cloud",
     "Azure"
 ]
 
 
 def generate_random_technology_keyword():
-    # Randomly select a keyword from the list of technology keywords
-    random_keyword = random.choice(technology_keywords)
-    return random_keyword
+    """Generate a random technology keyword."""
+    return random.choice(technology_keywords)
 
 
 def fetch_tech_news():
-    # Fetch top headlines from News API with 'tech' category
+    """Fetch top headlines from News API with a random technology keyword."""
     keyword = generate_random_technology_keyword()
-    # Encode the keyword
     encoded_keyword = quote(keyword)
     url = f'https://newsapi.org/v2/everything?q={encoded_keyword}&language=en&apiKey={NEWS_API_KEY}'
     response = requests.get(url)
     data = response.json()
-    articles = [random.choice(data['articles'])]
-    return articles
+    articles = data.get('articles', [])
+    if articles:
+        return [random.choice(articles)]
+    else:
+        logging.warning(f"No articles found for keyword: {keyword}")
+        return []
 
 
 def format_news(news):
-    # Initialize an empty string to store the formatted news
+    """Format news articles."""
     formatted_news = ""
-
-    # Iterate through each article in the news list
     for article in news:
-        # Append the title, description, and URL of each article to the formatted news string
         formatted_news += f"Title: {article['title']}\n"
         formatted_news += f"Description: {article['description']}\n"
         formatted_news += f"URL: {article['url']}\n\n"
-
-    # Return the formatted news string
     return formatted_news
 
 
 def fetch_and_post_tech_news():
-    # Fetch tech news from News API
+    """Fetch and post tech news to Telegram."""
     news = fetch_tech_news()
-
-    # Format the news
-    formatted_news = format_news(news)
-
-    # Log successful news fetching
-    logging.info("Tech news fetched successfully.")
-
-    # Prepare the channel URL for Telegram
-    channel_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage?chat_id={TELEGRAM_CHANNEL_ID}&text={formatted_news}"
-
-    # Send the formatted news to Telegram
-    response = requests.get(channel_url)
-
-    # Check if the request to Telegram was successful
-    if response.status_code == 200:
-        # Log successful news posting to Telegram
-        logging.info("Tech news posted to Telegram successfully.")
+    if news:
+        formatted_news = format_news(news)
+        channel_url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage?chat_id={TELEGRAM_CHANNEL_ID}&text={formatted_news}"
+        response = requests.get(channel_url)
+        if response.status_code == 200:
+            logging.info("Tech news posted to Telegram successfully.")
+        else:
+            logging.error(f"Failed to post tech news to Telegram. Status code: {response.status_code}")
     else:
-        # Log the error for failed news posting to Telegram
-        logging.error(f"Failed to post tech news to Telegram. Status code: {response.status_code}")
+        logging.warning("No tech news fetched.")
 
 
 if __name__ == '__main__':
