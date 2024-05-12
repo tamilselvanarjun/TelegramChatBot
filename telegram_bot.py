@@ -10,30 +10,17 @@ logging.basicConfig(filename='tech_news.log', level=logging.INFO, format='%(asct
 
 # Load environment variables from .env file
 load_dotenv()
+
+# Constants
 TELEGRAM_BOT_TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
 TELEGRAM_CHANNEL_ID = os.getenv('TELEGRAM_CHANNEL_ID')
 NEWS_API_KEY = os.getenv('NEWS_API_KEY')
 
 # List of technology-related keywords
 technology_keywords = [
-    "artificial intelligence",
-    "machine learning",
-    "cybersecurity",
-    "blockchain",
-    "internet of things",
-    "5g technology",
-    "cloud computing",
-    "big data",
-    "virtual reality",
-    "augmented reality",
-    "quantum computing",
-    "generative AI",
-    "data science",
-    "python programming",
-    "DevOps",
-    "Matplotlib",
-    "Google Cloud",
-    "Azure"
+    "artificial intelligence", "machine learning", "cybersecurity", "blockchain", "internet of things",
+    "5g technology", "cloud computing", "big data", "virtual reality", "augmented reality", "quantum computing",
+    "generative AI", "data science", "python programming", "DevOps", "Matplotlib", "Google Cloud", "Azure"
 ]
 
 
