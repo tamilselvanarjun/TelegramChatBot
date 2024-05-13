@@ -23,11 +23,9 @@ technology_keywords = [
     "generative AI", "data science", "python programming", "DevOps", "Matplotlib", "Google Cloud", "Azure"
 ]
 
-
 def generate_random_technology_keyword():
     """Generate a random technology keyword."""
     return random.choice(technology_keywords)
-
 
 def fetch_tech_news():
     """Fetch top headlines from News API with a random technology keyword."""
@@ -43,7 +41,6 @@ def fetch_tech_news():
         logging.warning(f"No articles found for keyword: {keyword}")
         return []
 
-
 def format_news(news):
     """Format news articles."""
     formatted_news = ""
@@ -52,7 +49,6 @@ def format_news(news):
         formatted_news += f"Description: {article['description']}\n"
         formatted_news += f"URL: {article['url']}\n\n"
     return formatted_news
-
 
 def fetch_and_post_tech_news():
     """Fetch and post tech news to Telegram."""
@@ -68,6 +64,6 @@ def fetch_and_post_tech_news():
     else:
         logging.warning("No tech news fetched.")
 
-
 if __name__ == '__main__':
     fetch_and_post_tech_news()
+
